@@ -1,20 +1,21 @@
 <?php
 declare(strict_types=1);
-define('MYVAR', 12);
 
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+// Below are several code blocks, read them, understand them and try to find whats wrong.
+// Once this exercise is finished, we'll go over the code all together and we can share how we debugged the following problems.
+// Try to fix the code every time and good luck ! (write down how you found out the answer and how you debugged the problem)
+// =============================================================================================================================
 
+// === Exercise 1 ===
+// Below we're defining a function, but it doesn't work when we run it.
+// Look at the error you get, read it and it should tell you the issue...,
+// sometimes, even your IDE can tell you what's wrong
 echo "Exercise 1 starts here:";
 
 function new_exercise($x) {
-        $block = "<br/><hr/><br/><br/>Exercise " .$x  . " starts here:<br/></br>";
-        echo $block;
-}
-function test(){
-    echo MYVAR;
+    $block = "<br/><hr/><br/><br/>Exercise $x starts here:<br/>";
+    echo $block;
 }
 
 
@@ -33,8 +34,10 @@ new_exercise(3);
 // === Exercise 3 ===
 // This should echo ` "Debugged !" `, fix it so that that is the literal text echo'ed
 
-$str = "Debugged ! Also very fun";
+$str = “Debugged ! Also very fun”;
 echo substr($str, 0, 10);
+
+
 
 new_exercise(4);
 // === Exercise 4 ===
@@ -42,12 +45,14 @@ new_exercise(4);
 // The print_r($week) should give:  Array ( [0] => mon [1] => tues [2] => wednes [3] => thurs [4] => fri [5] => satur [6] => sun )
 // Look up whats going wrong with this code, and then fix it, with ONE CHARACTER!
 
-$newWeek=[];
 foreach($week as $day) {
-        $day = substr($day, 0, 3);
-        array_push($newWeek, $day);
-};
-print_r($newWeek);
+    $day = substr($day, 0, -3);
+}
+
+print_r($week);
+
+
+
 
 new_exercise(5);
 // === Exercise 5 ===
@@ -55,9 +60,8 @@ new_exercise(5);
 // Fix the code so the for loop only pushes a-z in the array
 
 $arr = [];
-for ($letter = 'a'; $letter != 'aa'; $letter++) {
-        array_push($arr, $letter);
-
+for ($letter = 'a'; $letter <= 'z'; $letter++) {
+    array_push($arr, $letter);
 }
 
 print_r($arr); // Array ([0] => a, [1] => b, [2] => c, ...) a-z alphabetical array
@@ -74,42 +78,52 @@ $arr = [];
 
 function combineNames($str1 = "", $str2 = "") {
     $params = [$str1, $str2];
-    foreach($params as $param => $val) {
-        if ($val == ''){
-            $params[$param] = randomHeroName()[$param];
+    foreach($params as $param) {
+        if ($param == "") {
+            $param = randomHeroName();
         }
-
     }
-    echo implode(" - ", $params);
+    echo implode($params, " - ");
 }
 
+
+function randomGenerate($arr, $amount) {
+    for ($i = $amount; $i > 0; $i--) {
+        array_push($arr, randomHeroName());
+    }
+
+    return $amount;
+}
 
 function randomHeroName()
 {
     $hero_firstnames = ["captain", "doctor", "iron", "Hank", "ant", "Wasp", "the", "Hawk", "Spider", "Black", "Carol"];
-    $hero_lastnames = ["America", "Strange", "man", "Pym", "girl", "hulk", "eye", "widow", "panther", "daredevil", "marvel"];
-    return [$hero_firstnames[rand(0, count($hero_firstnames) -1)], $hero_lastnames[rand(0, count($hero_lastnames) - 1)]];
-};
+    $hero_lastnames = ["America", "Strange", "man", "Pym", "girl", "hulk", "eye", "widow", "panther", "daredevil", "marvel"]
+    $heroes = [$hero_firstnames, $hero_lastnames];
+    $randname = $heroes[rand(0,count($heroes))][rand(0, 10)];
 
-echo "Here is the name: " ;
-combineNames();
+    echo $randname;
+}
 
+echo "Here is the name: " . combineNames();
 
 new_exercise(7);
-function copyright(string $year) {
+function copyright(int $year) {
     return "&copy; $year BeCode";
 }
 //print the copyright
-echo copyright(date("Y"));
+copyright(date('Y'));
 
-
-
+///
+///
+///
 new_exercise(8);
 function login(string $email, string $password) {
-    if($email == 'john@example.be' && $password == 'pocahontas') {
-        return 'Welcome John Smith </br>';
+    if($email == 'john@example.be' || $password == 'pocahontas') {
+        return 'Welcome John';
+        return ' Smith';
     }
-    return 'No access </br>';
+    return 'No access';
 }
 /* do not change any code below */
 //should greet the user with his full name (John Smith)
@@ -120,30 +134,25 @@ echo login('john@example.be', 'dfgidfgdfg');
 echo login('wrong@example', 'wrong');
 /* You can change code again */
 
-
-
 new_exercise(9);
 function isLinkValid(string $link) {
     $unacceptables = array('https:','.doc','.pdf', '.jpg', '.jpeg', '.gif', '.bmp', '.png');
-    $goodLink = false;
+
     foreach ($unacceptables as $unacceptable) {
-
-        if ((strpos($link, $unacceptable) !== false)){
-
+        if (strpos($link, $unacceptable) == true) {
             return 'Unacceptable Found<br />';
-        };
+        }
     }
     return 'Acceptable<br />';
-
 }
 //invalid link
-echo isLinkValid('http://www.google.com/hack.pdf');
+isLinkValid('http://www.google.com/hack.pdf');
 //invalid link
-echo isLinkValid('https://google.com');
+isLinkValid('https://google.com');
 //VALID link
-echo isLinkValid('http://google.com');
+isLinkValid('http://google.com');
 //VALID link
-echo isLinkValid('http://google.com/test.txt');
+isLinkValid('http://google.com/test.txt');
 
 
 new_exercise(10);
@@ -153,17 +162,11 @@ new_exercise(10);
 $areTheseFruits = ['apple', 'bear', 'beef', 'banana', 'cherry', 'tomato', 'car'];
 $validFruits = ['apple', 'pear', 'banana', 'cherry', 'tomato'];
 //from here on you can change the code
-
-$diff = array_intersect($areTheseFruits, $validFruits);
-var_dump($diff);
-echo '<br>';
-
-$count = count($areTheseFruits);
-
-for($i=0; $i < $count; $i++) {
+for($i=0; $i <= count($areTheseFruits); $i++) {
     if(!in_array($areTheseFruits[$i], $validFruits)) {
         unset($areTheseFruits[$i]);
     }
 }
-
 var_dump($areTheseFruits);//do not change this
+
+?>
